@@ -18,4 +18,5 @@ Route::middleware("auth:sanctum")->group(function (){
     Route::post("/register", [AuthController::class, "create"]);
     Route::post("/update", [AuthController::class, "update"]);
     Route::apiResource('quests',QuestController::class);
+    Route::post('/posts/{post}/report', [PostController::class, 'report']);
 });
