@@ -32,7 +32,6 @@ class AuthController extends Controller
             }
 
             $token = $user->createToken("auth")->plainTextToken;
-            // $setting = Setting::get();
             $data = [
                 "user" => $user,
                 "token" => $token
@@ -52,8 +51,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $user = User::find(auth("sanctum")->user()->id);
-        $user->tokens()->delete();
+        $request->user()->tokens()->delete();
+        return response()->json(['message' => 'Logged out successfully.']);
     }
 
     public function store(Request $request){

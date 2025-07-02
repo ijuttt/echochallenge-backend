@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 
 
 class PostController extends Controller
@@ -30,7 +29,7 @@ class PostController extends Controller
         }
 
         $post = Post::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth("sanctum")->user->id,
             'caption' => $request->caption,
             'image_url' => $imagePath,
             'likes' => 0,
@@ -57,7 +56,7 @@ class PostController extends Controller
     // Hapus postingan
     public function destroy(Post $post)
     {
-        if ($post->user_id !== auth()->id()) {
+        if ($post->user_id !== auth("sanctum")->user->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
