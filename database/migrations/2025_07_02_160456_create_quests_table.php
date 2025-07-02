@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('daily_quests', function (Blueprint $table) {
+        Schema::create('quests', function (Blueprint $table) {
             $table->id();
+            $table->string('quest', 1000);
+            $table->unsignedInteger('point');
             $table->timestamps();
         });
     }
