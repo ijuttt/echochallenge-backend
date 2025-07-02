@@ -15,14 +15,13 @@ class userSeeder extends Seeder
     {
         $users = [
             [
-                'fullname'=>'Raditya Banu',
-                'email'=>'radityabanu1312@gmail.com',
-                'username'=>'raditya1312',
-                'password'=> bcrypt('banu1312'),
-                'role'=>'SuperAdmin'
+                'fullname' => 'Raditya Banu',
+                'email' => 'radityabanu1312@gmail.com',
+                'username' => 'raditya1312',
+                'password' => bcrypt('banu1312'),
+                'role' => 'SuperAdmin'
             ]
         ];
-
         foreach ($users as $user) {
             User::create($user);
         }
