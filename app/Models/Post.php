@@ -21,4 +21,9 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function reports()
+    {
+        return $this->belongsToMany(Report::class, 'post_report')->withTimestamps();
+    }
 }

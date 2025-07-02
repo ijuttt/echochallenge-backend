@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Database\Seeder;
 use Database\Seeders\QuestSeeder;
+use Database\Seeders\ReportSeeder;
 use Database\Seeders\userSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -10,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             QuestSeeder::class,
             userSeeder::class,
+            ReportSeeder::class,
         ]);
     }
 }

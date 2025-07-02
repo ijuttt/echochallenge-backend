@@ -14,8 +14,9 @@ Route::middleware("auth:sacntum")->group(function (){
     Route::post('/posts/{post}/like', [PostController::class, 'like']);
     Route::post('/posts/{post}/dislike', [PostController::class, 'dislike']);
     Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+    Route::post('/posts/{post}/report', [PostController::class, 'report']);
     Route::post("logout", [AuthController::class, "logout"]);
     Route::post("register", [AuthController::class, "create"]);
     Route::post("update", [AuthController::class, "update"]);
-    Route::apiResource('quests', [QuestController::class]);
+    Route::apiResource('quests', QuestController::class);
 });
