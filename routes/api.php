@@ -11,5 +11,5 @@ Route::middleware("auth:sacntum")->group(function (){
     Route::post("logout", [AuthController::class, "logout"]);
     Route::post("register", [AuthController::class, "create"]);
     Route::post("update", [AuthController::class, "update"]);
-    Route::get('/quests', [QuestController::class, 'index']);
+    Route::apiResource('quests', [QuestController::class]);
 });
