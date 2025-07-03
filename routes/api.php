@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DailyQuestController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuestController;
+use App\Http\Controllers\LeaderboardController;
 
 Route::post("/users/login", [AuthController::class, "auth"]);
+Route::get('/leaderboard', [LeaderboardController::class, 'index']);
 
 Route::middleware("auth:sanctum")->group(function (){
     Route::prefix('posts')->group(function (){
@@ -20,7 +22,7 @@ Route::middleware("auth:sanctum")->group(function (){
     Route::prefix('users')->group(function (){
         Route::post("/logout", [AuthController::class, "logout"]);
         Route::post("/register", [AuthController::class, "create"]);
-        Route::put("/update/{user}", [AuthController::class, "update"]);
+        Route::post("/update/{user}", [AuthController::class, "update"]);
         Route::get("/{user}", [AuthController::class, "getById"]);
     });
     Route::apiResource('quests',QuestController::class);

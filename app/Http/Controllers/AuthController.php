@@ -97,7 +97,7 @@ class AuthController extends Controller
     
             $user->update($validated);
 
-            return response()->json(["message" => "Success", "data" => $user]);
+            return response()->json(["message" => "Success", "data" => $validated['photo']]);
         } catch (ValidationException $ex) {
             return response()->json([
                 "message" => "Validation Failed",
@@ -112,12 +112,6 @@ class AuthController extends Controller
     }
 
     public function getById(User $user){
-       if(!$user){
-        return response()->json([
-            "message" => "failed",
-            "error"=>"user tidak ada"
-        ],Response::HTTP_NOT_FOUND);
-       }
         return response()->json([
             "message" => "success",
             "data"=>$user

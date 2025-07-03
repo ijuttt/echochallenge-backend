@@ -1,8 +1,12 @@
 <?php
+
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Database\Seeders\QuestSeeder;
 use Database\Seeders\ReportSeeder;
-use Database\Seeders\userSeeder;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\LeaderboardSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -10,9 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             QuestSeeder::class,
-            userSeeder::class,
+            UserSeeder::class,
             ReportSeeder::class,
+            LeaderboardSeeder::class, 
         ]);
     }
 }
-
