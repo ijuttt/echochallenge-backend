@@ -97,7 +97,7 @@ class AuthController extends Controller
     
             $user->update($validated);
 
-            return response()->json(["message" => "Success", "data" => $validated['photo']]);
+            return response()->json(["message" => "Success", "data" => $user]);
         } catch (ValidationException $ex) {
             return response()->json([
                 "message" => "Validation Failed",
