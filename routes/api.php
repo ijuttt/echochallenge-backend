@@ -21,7 +21,7 @@ Route::middleware("auth:sanctum")->group(function (){
         Route::post("/logout", [AuthController::class, "logout"]);
         Route::post("/register", [AuthController::class, "create"]);
         Route::put("/update/{user}", [AuthController::class, "update"]);
-        Route::get("/update/{user}", [AuthController::class, "getById"]);
+        Route::get("/{user}", [AuthController::class, "getById"]);
     });
     Route::apiResource('quests',QuestController::class);
 });
