@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('username');
             $table->string('password');
+            $table->longText('photo')->nullable();
             $table->enum('role',['SuperAdmin','Admin','User','Guest']);
             $table->rememberToken();
             $table->timestamps();

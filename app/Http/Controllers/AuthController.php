@@ -82,15 +82,21 @@ class AuthController extends Controller
                 'username' => ['string', Rule::unique('users', 'username')->ignore($user->id)],
                 'email'    => ['email', Rule::unique('users', 'email')->ignore($user->id)],
                 'password' => ['string'],
+                'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]);
     
             // Enkripsi password jika diisi
             if (isset($validated['password'])) {
                 $validated['password'] = bcrypt($validated['password']);
             }
+
+            if ($request->hasFile('photo')) {
+                $image = base64_encode(file_get_contents($request->file('photo')->getRealPath()));
+                $validated['photo'] = $image;
+            }
     
             $user->update($validated);
-    
+
             return response()->json(["message" => "Success", "data" => $user]);
         } catch (ValidationException $ex) {
             return response()->json([
@@ -103,5 +109,18 @@ class AuthController extends Controller
                 "error" => $ex->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function getById(User $user){
+       if(!$user){
+        return response()->json([
+            "message" => "failed",
+            "error"=>"user tidak ada"
+        ],Response::HTTP_NOT_FOUND);
+       }
+        return response()->json([
+            "message" => "success",
+            "data"=>$user
+        ],Response::HTTP_OK);
     }
 }
