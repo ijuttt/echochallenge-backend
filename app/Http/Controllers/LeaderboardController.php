@@ -11,8 +11,8 @@ class LeaderboardController extends Controller
     {
         $leaderboard = DB::table('user_points')
             ->join('users', 'user_points.user_id', '=', 'users.id')
-            ->select('user_points.user_id', 'users.fullname', DB::raw('SUM(user_points.points) as total_points'))
-            ->groupBy('user_points.user_id', 'users.fullname')
+            ->select('user_points.user_id', 'users.username', DB::raw('SUM(user_points.points) as total_points'))
+            ->groupBy('user_points.user_id', 'users.username')
             ->orderByDesc('total_points')
             ->limit(10)
             ->get();
