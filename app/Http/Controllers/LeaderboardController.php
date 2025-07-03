@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;   // ← tambahkan
 
 class LeaderboardController extends Controller
 {
@@ -11,12 +12,21 @@ class LeaderboardController extends Controller
     {
         $leaderboard = DB::table('user_points')
             ->join('users', 'user_points.user_id', '=', 'users.id')
-            ->select('user_points.user_id', 'users.username', DB::raw('SUM(user_points.points) as total_points'))
-            ->groupBy('user_points.user_id', 'users.username')
-            ->orderByDesc('total_points')
+            ->select(
+                'users.id',
+                'users.fullname',
+                'users.username',
+                DB::raw('COALESCE(users.photo, "") as avatar'),
+                DB::raw('SUM(user_points.points) as points')
+            )
+            ->groupBy('users.id', 'users.fullname', 'users.username', 'users.photo')
+            ->orderByDesc('points')
             ->limit(10)
             ->get();
 
-        return response()->json($leaderboard);
+        return response()->json([
+            "message" => "Success",
+            "data"    => $leaderboard
+        ], Response::HTTP_OK);
     }
 }
