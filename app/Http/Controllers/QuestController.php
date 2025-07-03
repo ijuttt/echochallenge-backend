@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quest;
+use App\Models\UserQuestLog;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class QuestController extends Controller
 {
@@ -13,56 +17,33 @@ class QuestController extends Controller
     public function index()
     {
         $randomIds = collect(range(1, 122))->shuffle()->take(3);
-    $quests = Quest::whereIn('id', $randomIds)->get();
+        $quests = Quest::whereIn('id', $randomIds)->get();
 
-    return response()->json($quests);
+        return response()->json($quests);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function completedQuest(Request $request,Quest $quest){
+        try{
+            $user = auth('sacntum')->user();
+    
+            // Simpan ke tabel user_quest_logs
+            $completedQuest = UserQuestLog::create([
+                'user_id' => $user->id,
+                'quest_name' => $quest->quest,
+                'point' => $quest->point,
+            ]);
+        
+            return response()->json([
+                'message' => 'Quest completed!',
+                'quest' => $completedQuest,
+                'plus_point' => $quest->poin
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                "message" => "Failed",
+                "error" => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+       
     }
 }

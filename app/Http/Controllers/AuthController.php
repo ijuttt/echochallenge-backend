@@ -112,9 +112,13 @@ class AuthController extends Controller
     }
 
     public function getById(User $user){
+        $user->load(['questLogs', 'posts'])->makeHidden(['questLogs', 'posts']);
         return response()->json([
             "message" => "success",
-            "data"=>$user
+            "user"=>$user,
+            "completed_quest"=>$user->questLogs,
+            "posts"=>$user->posts,
+            "total_point"=>  $user->total_point
         ],Response::HTTP_OK);
     }
 }

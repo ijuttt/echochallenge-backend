@@ -49,4 +49,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function questLogs(){
+        return $this->hasMany(UserQuestLog::class);
+    }
+
+    public function getTotalPointAttribute(){
+        return $this->questLogs()->sum('point');
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
 }

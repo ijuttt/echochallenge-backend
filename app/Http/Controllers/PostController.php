@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -19,25 +20,33 @@ class PostController extends Controller
     // Buat postingan baru (dengan gambar)
     public function store(Request $request)
     {
-        $request->validate([
-            'caption' => 'required|string|max:1000',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('posts', 'public');
+        try {
+            $request->validate([
+                'caption' => 'required|string|max:1000',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
+    
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('posts', 'public');
+            }
+    
+            $post = Post::create([
+                'user_id' => auth("sanctum")->user->id,
+                'caption' => $request->caption,
+                'image_url' => $imagePath,
+                'likes' => 0,
+                'dislikes' => 0,
+            ]);
+    
+            return response()->json($post, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                "message" => "Failed",
+                "error" => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $post = Post::create([
-            'user_id' => auth("sanctum")->user->id,
-            'caption' => $request->caption,
-            'image_url' => $imagePath,
-            'likes' => 0,
-            'dislikes' => 0,
-        ]);
-
-        return response()->json($post, 201);
+        
     }
 
     // Tambah Like

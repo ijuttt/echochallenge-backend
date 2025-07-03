@@ -2,13 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DailyQuestController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\QuestController;
-use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\PoinController;
 
 Route::post("/users/login", [AuthController::class, "auth"]);
-Route::get('/leaderboard', [LeaderboardController::class, 'index']);
+Route::get('/leaderboard', [PoinController::class, 'index']);
 
 Route::middleware("auth:sanctum")->group(function (){
     Route::prefix('posts')->group(function (){
@@ -25,5 +24,9 @@ Route::middleware("auth:sanctum")->group(function (){
         Route::post("/update/{user}", [AuthController::class, "update"]);
         Route::get("/{user}", [AuthController::class, "getById"]);
     });
-    Route::apiResource('quests',QuestController::class);
+    Route::prefix('quests')->group(function(){
+        Route::post('/complete/{quest}', [QuestController::class, 'completedQuest']);
+        Route::get('/', [QuestController::class, 'index']);
+
+    });
 });
