@@ -62,8 +62,9 @@ class AuthController extends Controller
                 "username"=>"required|string|unique:users,username",
                 "password"=>"required|string",
                 "email"=>"required|email",
-                "role"=>"required|string|in:'SuperAdmin','Admin','User','Guest'",
+                "role" => "nullable|string|in:SuperAdmin,Admin,User,Guest",    
             ]);
+            $validate['role'] = $validate['role'] ?? 'User';
             $data = User::query()->create($validate);
 
             return response()->json(["message" => "Success", "data" => $data]);

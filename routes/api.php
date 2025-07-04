@@ -7,6 +7,7 @@ use App\Http\Controllers\QuestController;
 use App\Http\Controllers\PoinController;
 
 Route::post("/users/login", [AuthController::class, "auth"]);
+Route::post("/register", [AuthController::class, "store"]);
 Route::get('/leaderboard', [PoinController::class, 'index']);
 
 Route::middleware("auth:sanctum")->group(function (){
@@ -20,7 +21,6 @@ Route::middleware("auth:sanctum")->group(function (){
     });
     Route::prefix('users')->group(function (){
         Route::post("/logout", [AuthController::class, "logout"]);
-        Route::post("/register", [AuthController::class, "create"]);
         Route::post("/update/{user}", [AuthController::class, "update"]);
         Route::get("/{user}", [AuthController::class, "getById"]);
     });
