@@ -25,20 +25,22 @@ class PostController extends Controller
                 'caption' => 'required|string|max:1000',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
-    
+        
+            $user = $request->user(); // ✅ Fix user access
+        
             $imagePath = null;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('posts', 'public');
             }
-    
+        
             $post = Post::create([
-                'user_id' => auth("sanctum")->user->id,
+                'user_id' => $user->id, // ✅ Fix here too
                 'caption' => $request->caption,
                 'image_url' => $imagePath,
                 'likes' => 0,
                 'dislikes' => 0,
             ]);
-    
+        
             return response()->json($post, 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -46,7 +48,6 @@ class PostController extends Controller
                 "error" => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        
     }
 
     // Tambah Like
