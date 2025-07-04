@@ -50,16 +50,29 @@ class PostController extends Controller
     }
 
     // Tambah Like
-    public function like(Post $post)
+    public function incLike(Post $post)
     {
         $post->increment('likes');
         return response()->json(['likes' => $post->likes]);
     }
 
     // Tambah Dislike
-    public function dislike(Post $post)
+    public function incDislike(Post $post)
     {
         $post->increment('dislikes');
+        return response()->json(['dislikes' => $post->dislikes]);
+    }
+
+    public function decLike(Post $post)
+    {
+        $post->decrement('likes');
+        return response()->json(['likes' => $post->likes]);
+    }
+
+    // Tambah Dislike
+    public function decDislike(Post $post)
+    {
+        $post->decrement('dislikes');
         return response()->json(['dislikes' => $post->dislikes]);
     }
 

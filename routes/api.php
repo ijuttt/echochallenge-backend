@@ -14,8 +14,10 @@ Route::middleware("auth:sanctum")->group(function (){
     Route::prefix('posts')->group(function (){
         Route::get('/', [PostController::class, 'index']);
         Route::post('/', [PostController::class, 'store']);
-        Route::put('/{post}/like', [PostController::class, 'like']);
-        Route::put('/{post}/dislike', [PostController::class, 'dislike']);
+        Route::put('/{post}/incLike', [PostController::class, 'incLike']);
+        Route::put('/{post}/decLike', [PostController::class, 'decLike']);
+        Route::put('/{post}/incDislike', [PostController::class, 'incDislike']);
+        Route::put('/{post}/decDislike', [PostController::class, 'decDislike']);
         Route::delete('/{post}', [PostController::class, 'destroy']);
         Route::post('/posts/{post}/report', [PostController::class, 'report']);
     });
