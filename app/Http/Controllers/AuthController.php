@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -112,14 +113,23 @@ class AuthController extends Controller
         }
     }
 
-    public function getById(User $user){
+    public function getProfile(User $user){
+        $user = Auth::user(); // ambil user yang sedang login
+
+        if (!$user) {
+            return response()->json([
+                "message" => "Unauthenticated",
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
         $user->load(['questLogs', 'posts'])->makeHidden(['questLogs', 'posts']);
+
         return response()->json([
             "message" => "success",
-            "user"=>$user,
-            "completed_quest"=>$user->questLogs,
-            "posts"=>$user->posts,
-            "total_point"=>  $user->total_point
-        ],Response::HTTP_OK);
+            "user" => $user,
+            "completed_quest" => $user->questLogs,
+            "posts" => $user->posts,
+            "total_point" => $user->total_point
+        ], Response::HTTP_OK);
     }
 }

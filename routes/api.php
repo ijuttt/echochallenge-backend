@@ -22,7 +22,7 @@ Route::middleware("auth:sanctum")->group(function (){
     Route::prefix('users')->group(function (){
         Route::post("/logout", [AuthController::class, "logout"]);
         Route::post("/update/{user}", [AuthController::class, "update"]);
-        Route::get("/{user}", [AuthController::class, "getById"]);
+        Route::get("/", [AuthController::class, "getProfile"]);
     });
     Route::prefix('quests')->group(function(){
         Route::post('/complete/{quest}', [QuestController::class, 'completedQuest']);
