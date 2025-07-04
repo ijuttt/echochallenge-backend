@@ -16,7 +16,7 @@ class QuestController extends Controller
      */
     public function index()
     {
-        $randomIds = collect(range(1, 122))->shuffle()->take(3);
+        $randomIds = collect(range(1, 48))->shuffle()->take(3);
         $quests = Quest::whereIn('id', $randomIds)->get();
 
         return response()->json($quests);
