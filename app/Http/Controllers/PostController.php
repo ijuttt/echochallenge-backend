@@ -36,7 +36,6 @@ public function store(Request $request)
             $imagePath = $request->file('image')->store('posts', 'public');
         }
 
-        // ==== LOGIKA STREAK DIMULAI DI SINI ====
         $today = Carbon::today();
         $lastPostDate = $user->last_post_date ? Carbon::parse($user->last_post_date) : null;
 
@@ -45,18 +44,14 @@ public function store(Request $request)
         } elseif ($lastPostDate->isYesterday()) {
             $user->streak += 1;
         } elseif ($lastPostDate->isToday()) {
-            // Sudah post hari ini, jangan ubah streak
         } else {
-            // Lewat lebih dari 1 hari, reset
             $user->streak = 1;
         }
 
-        // Jika belum post hari ini, update tanggal
         if (!$lastPostDate || !$lastPostDate->isToday()) {
             $user->last_post_date = $today;
-            $user->save(); // hanya save jika terjadi perubahan streak
+            $user->save();
         }
-        // ==== LOGIKA STREAK SELESAI ====
 
         $post = Post::create([
             'user_id' => $user->id,

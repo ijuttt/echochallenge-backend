@@ -24,7 +24,7 @@ class QuestController extends Controller
 
     public function completedQuest(Request $request,Quest $quest){
         try{
-            $user = auth('sacntum')->user();
+            $user = auth('sanctum')->user();
     
             // Simpan ke tabel user_quest_logs
             $completedQuest = UserQuestLog::create([
