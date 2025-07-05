@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -95,25 +96,41 @@ class PostController extends Controller
 
     public function report(Request $request, $postId)
     {
-        $post = Post::findOrFail($postId);
-
-        // Buat Report baru (bisa tambah kolom alasan)
-        $report = Report::create([
-            'reason' => $request->input('reason')
+        $request->validate([
+            'post_id' => 'required|exists:posts,id',
+            'report_id' => 'required|exists:reports,id',
         ]);
-
-        // Attach ke post
-        $post->reports()->attach($report->id);
-
-        // Hitung total report untuk post ini
-        $totalReports = $post->reports()->count();
-
-        // Jika lebih dari 50, hapus post
-        if ($totalReports > 50) {
-            $post->delete();
-            return response()->json(['message' => 'Post deleted due to excessive reports'], 200);
+    
+        $post = Post::findOrFail($request->post_id);
+        $reportId = $request->report_id;
+    
+        $alreadyReported = DB::table('post_report')
+            ->where('post_id', $post->id)
+            ->where('report_id', $reportId)
+            ->exists();
+    
+        if (!$alreadyReported) {
+            // Masukkan ke pivot table
+            $post->reports()->attach($reportId);
         }
-
-        return response()->json(['message' => 'Post reported successfully', 'total_reports' => $totalReports], 200);
+    
+        $totalReports = DB::table('post_report')
+            ->where('post_id', $post->id)
+            ->count();
+    
+        // Jika sudah 50 atau lebih, hapus post
+        if ($totalReports >= 50) {
+            $post->delete();
+    
+            return response()->json([
+                'message' => 'Post deleted due to reaching 50 or more reports.',
+                'total_reports' => $totalReports
+            ]);
+        }
+    
+        return response()->json([
+            'message' => 'Report submitted successfully.',
+            'total_reports' => $totalReports
+        ]);
     }
 }
