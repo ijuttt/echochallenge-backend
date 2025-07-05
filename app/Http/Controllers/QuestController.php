@@ -32,18 +32,22 @@ class QuestController extends Controller
                 'quest_name' => $quest->quest,
                 'point' => $quest->point,
             ]);
-        
+
+            // Increment the user's total points in users table
+            $user->increment('points', $quest->point);
+
             return response()->json([
                 'message' => 'Quest completed!',
                 'quest' => $completedQuest,
-                'plus_point' => $quest->poin
-            ]);
-        }catch(\Exception $e){
+                'plus_point' => $quest->point,
+                'user' => $user->fresh(), // ensure we return the updated user
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
             return response()->json([
                 "message" => "Failed",
                 "error" => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-       
     }
 }
