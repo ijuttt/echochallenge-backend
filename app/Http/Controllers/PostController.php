@@ -124,7 +124,7 @@ public function store(Request $request)
         return response()->json(['message' => 'Deleted']);
     }
 
-    public function report(Request $request, $postId)
+    public function report(Request $request)
     {
         $request->validate([
             'post_id' => 'required|exists:posts,id',

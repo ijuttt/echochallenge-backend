@@ -84,7 +84,7 @@ class AuthController extends Controller
                 'username' => ['string', Rule::unique('users', 'username')->ignore($user->id)],
                 'email'    => ['email', Rule::unique('users', 'email')->ignore($user->id)],
                 'password' => ['string'],
-                'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             ]);
     
             // Enkripsi password jika diisi
@@ -93,8 +93,7 @@ class AuthController extends Controller
             }
 
             if ($request->hasFile('photo')) {
-                $image = base64_encode(file_get_contents($request->file('photo')->getRealPath()));
-                $validated['photo'] = $image;
+                $validated['photo'] = $request->file('photo')->store('profile', 'public');
             }
     
             $user->update($validated);
