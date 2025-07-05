@@ -20,7 +20,6 @@ Route::middleware("auth:sanctum")->group(function (){
         Route::put('/{post}/decDislike', [PostController::class, 'decDislike']);
         Route::delete('/{post}', [PostController::class, 'destroy']);
         Route::post('/report', [PostController::class, 'report']);
-        Route::post('/{post}/report', [PostController::class, 'report']);
     });
     Route::prefix('users')->group(function (){
         Route::post("/logout", [AuthController::class, "logout"]);
