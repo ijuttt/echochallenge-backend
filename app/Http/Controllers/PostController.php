@@ -24,7 +24,7 @@ class PostController extends Controller
         try {
             $request->validate([
                 'caption' => 'required|string|max:1000',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             ]);
         
             $user = $request->user(); // ✅ Fix user access
@@ -94,7 +94,7 @@ class PostController extends Controller
         return response()->json(['message' => 'Deleted']);
     }
 
-    public function report(Request $request, $postId)
+    public function report(Request $request)
     {
         $request->validate([
             'post_id' => 'required|exists:posts,id',
