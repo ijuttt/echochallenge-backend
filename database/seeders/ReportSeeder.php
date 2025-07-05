@@ -10,11 +10,11 @@ class ReportSeeder extends Seeder
     public function run(): void
     {
         $reports = [
-            ['type' => 'Spam'],
-            ['type' => 'Abusive Content'],
-            ['type' => 'Misinformation'],
-            ['type' => 'Hate Speech'],
-            ['type' => 'Nudity'],
+            ['type' => 'This post is not an eco-activities'],
+            ['type' => 'This post contains hate speech'],
+            ['type' => 'This post contains misinformation'],
+            ['type' => 'This post contains nudity'],
+            ['type' => 'This post contains illegal activities'],
         ];
 
         foreach ($reports as $report) {
